@@ -79,9 +79,13 @@ namespace KestrelDemo
 			var loggerFactory = app.ApplicationServices.GetService<ILoggerFactory>();
 			Logger.AssignLoggerFactory(loggerFactory);
 
-			var logsPath = this.Configuration.GetAppJsonSetting("Logging/Path");
-			if (!string.IsNullOrWhiteSpace(logsPath) && Directory.Exists(logsPath))
-				loggerFactory.AddFile(Path.DirectorySeparatorChar.ToString() + "{Date}_Test-ASP.NET-Core-With-Kestrel.txt", this.Configuration.GetAppJsonSetting("Logging/LogLevel/Default", "Warning").ToEnum<LogLevel>());
+			var path = this.Configuration.GetAppJsonSetting("Logging/Path");
+			if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
+			{
+				path += Path.DirectorySeparatorChar.ToString() + "{Date}_Test-Kestrel.txt";
+				loggerFactory.AddFile(path, this.Configuration.GetAppJsonSetting("Logging/LogLevel/Default", "Warning").ToEnum<LogLevel>());
+				Logger.Log<Startup>(LogLevel.Information, LogLevel.Information, $"Rolling log files is enabled => {path}");
+			}
 
 			app.UseErrorCodePages();
 			app.UseResponseCompression();

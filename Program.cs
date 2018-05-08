@@ -29,11 +29,7 @@ namespace KestrelDemo
 				.UseStartup<Startup>()
 				.UseKestrel(options =>
 				{
-					options.Listen(IPAddress.Any, 8022);
-					options.Listen(IPAddress.Any, 8023, listenOptions =>
-					{
-						listenOptions.UseHttps(new X509Certificate2(@"\\Mac\Home\Documents\VIE Apps\Components\petrolimex.com.vn[pwd-a].pfx", "a", X509KeyStorageFlags.UserKeySet));
-					});
+                    options.Listen(IPAddress.Any, 8022);
 				})
 				.PreferHostingUrls(false)
 				.Build();

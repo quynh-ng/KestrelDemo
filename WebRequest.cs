@@ -27,7 +27,7 @@ namespace KestrelDemo
 	public class WebRequest
 	{
 		readonly RequestDelegate _next;
-		ILogger _logger;
+		readonly ILogger _logger;
 
 		public WebRequest(RequestDelegate next, ILoggerFactory loggerFactory)
 		{
@@ -49,9 +49,8 @@ namespace KestrelDemo
 			{
 				context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
 				context.Response.Headers.Add("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
-				var allowHeaders = context.Request.Headers["Access-Control-Request-Headers"];
-				if (allowHeaders.Count > 0)
-					context.Response.Headers.Add("Access-Control-Request-Headers", allowHeaders);
+				if (context.Request.Headers.ContainsKey("Access-Control-Request-Headers"))
+					context.Response.Headers.Add("Access-Control-Request-Headers", context.Request.Headers["Access-Control-Request-Headers"]);
 				return;
 			}
 
